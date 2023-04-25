@@ -9,6 +9,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import LoadingPage, { Loading } from "~/components/Loading";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
@@ -90,8 +91,12 @@ const Post = ({ post, author }: PostWithUser) => {
       />
       <div className="flex flex-col">
         <p className=" text-slate-400">
-          <span className="font-bold">@{author.username} </span>
-          <span> · {dayjs(post.createdAt).fromNow()} </span>
+          <Link href={`/@${author.username}`}>
+            <span className="font-bold">@{author.username} </span>
+          </Link>
+          <Link href={`/post/${post.id}`}>
+            <span> · {dayjs(post.createdAt).fromNow()} </span>
+          </Link>
         </p>
         <p className="text-lg">{post.content}</p>
       </div>
