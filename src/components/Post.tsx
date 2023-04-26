@@ -10,12 +10,12 @@ type PostWithUser = RouterOutputs["posts"]["getAll"][number];
 
 const Post = ({ post, author }: PostWithUser) => {
   return (
-    <div key={post.id} className="flex gap-4 border p-8">
+    <div key={post.id} className="flex gap-4  p-8">
       <Link href={`/@${author?.username || "Deleted User"}`}>
         <Image
           src={author?.profileImageUrl}
           alt="Profile Image"
-          className="rounded-full"
+          className="rounded-full border-2 border-white"
           width={56}
           height={56}
         />

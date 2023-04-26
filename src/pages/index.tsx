@@ -9,6 +9,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import Layout from "~/components/Layout";
 import Post from "~/components/Post";
+import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
@@ -42,7 +43,7 @@ const CreatePost = () => {
       <Image
         src={user.profileImageUrl}
         alt="Profile Image"
-        className="rounded-full"
+        className="rounded-full border-2 border-white"
         width={56}
         height={56}
       />
@@ -82,7 +83,7 @@ const Feed = () => {
   if (!data)
     return <div className="text-xl font-bold">Something went Wrong</div>;
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col divide-y  divide-slate-400">
       {data?.map((fullPost) => (
         <Post key={fullPost.post.id} {...fullPost} />
       ))}
@@ -98,28 +99,32 @@ const Home: NextPage = () => {
 
   return (
     <Layout>
-      <div className="flex items-center justify-between border-b p-4">
-        <h1 className="text-xl font-bold">Tweemoji</h1>
+      <div className="flex items-center justify-between p-4">
+        <Link href="/">
+          <h1 className="text-xl font-bold">Tweemoji</h1>
+        </Link>
         {!isSignedIn ? (
-          <div className="flex justify-center">
+          <div className="flex justify-center rounded-md bg-blue-700 py-2 px-4  transition-all hover:bg-blue-400">
             <SignInButton />
           </div>
         ) : (
           <div className="flex flex-col">
-            <div className="flex  gap-4">
+            <div className="flex  gap-4 rounded-md bg-slate-700 p-2  transition-all hover:bg-slate-400">
               <Image
                 src={user?.profileImageUrl}
                 alt={`${user?.username || "Deleted User"} Profile Image`}
-                className="rounded-full"
-                width={56}
-                height={56}
+                className="rounded-full border-2 border-white"
+                width={48}
+                height={48}
               />
               <SignOutButton />
             </div>
           </div>
         )}
       </div>
-      <div className="p-8">{isSignedIn && <CreatePost />}</div>
+      <div className="border-b border-slate-400 p-8">
+        {isSignedIn && <CreatePost />}
+      </div>
       <Feed />
     </Layout>
   );
