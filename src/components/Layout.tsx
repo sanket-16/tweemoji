@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 
-const Layout = (props: PropsWithChildren<{}>) => {
+const Layout = (props: PropsWithChildren) => {
   return (
     <div>
       <main className="flex h-screen justify-center">
