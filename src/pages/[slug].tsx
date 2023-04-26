@@ -11,6 +11,7 @@ import superjson from "superjson";
 import Layout from "~/components/Layout";
 import Image from "next/image";
 import Post from "~/components/Post";
+import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 
 dayjs.extend(relativeTime);
 
@@ -77,11 +78,7 @@ const ProfilePage = ({ username }: { username: string }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const ssg = createProxySSGHelpers({
-    router: appRouter,
-    ctx: { prisma, userId: null },
-    transformer: superjson, // optional - adds superjson serialization
-  });
+  const ssg = generateSSGHelper();
   const slug = context.params?.slug;
   if (typeof slug != "string") throw new Error("no slug");
   const username = slug.replace("@", "");
