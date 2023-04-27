@@ -20,3 +20,7 @@ This app is created using [T3 Stack](https://create.t3.gg) .
         npm run dev
 
 This will run the project
+
+## Screenshots
+
+![image](https://user-images.githubusercontent.com/64531568/234895428-a1ccf3c5-3c2b-4a1a-bbd1-71527124258f.png)
