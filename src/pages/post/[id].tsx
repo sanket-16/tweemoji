@@ -2,7 +2,7 @@ import Head from "next/head";
 import { api } from "~/utils/api";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Loading } from "~/components/Loading";
+import { PostSkeleton } from "~/components/Loading";
 import Layout from "~/components/Layout";
 import type { GetStaticProps } from "next";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
@@ -16,12 +16,12 @@ const PostPage = ({ id }: { id: string }) => {
   });
   if (isLoading)
     return (
-      <div className="flex h-40 w-full items-center justify-center">
-        <Loading />
-      </div>
+      <Layout>
+        <PostSkeleton />
+      </Layout>
     );
-  if (isError) return <div>Something went Wrong!</div>;
-  if (!data) return <div>No Posts</div>;
+  if (isError) return <div className="p-6 text-destructive">Something went Wrong!</div>;
+  if (!data) return <div className="p-6 text-muted-foreground">No Posts</div>;
   return (
     <>
       <Head>
