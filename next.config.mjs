@@ -7,7 +7,7 @@
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: ["images.clerk.dev"],
+    domains: ["images.clerk.dev","img.clerk.com"],
   },
   reactStrictMode: true,
 

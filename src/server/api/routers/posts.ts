@@ -1,4 +1,4 @@
-import type { User } from "@clerk/nextjs/dist/api";
+import type { User } from "@clerk/nextjs/server";
 import { clerkClient } from "@clerk/nextjs/server";
 import type { Post } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
@@ -14,17 +14,17 @@ const filterUserForClient = (user: User) => {
   return {
     id: user.id,
     username: user.username,
-    profileImageUrl: user.profileImageUrl,
+    profileImageUrl: user.imageUrl,
   };
 };
 
 const addUserDataToPosts = async (posts: Post[]) => {
-  const users = (
-    await clerkClient.users.getUserList({
-      userId: posts.map((post) => post.authorId),
-      limit: 100,
-    })
-  ).map(filterUserForClient);
+  const usersResponse = await clerkClient().users.getUserList({
+    userId: posts.map((post) => post.authorId),
+    limit: 100,
+  });
+  
+  const users = usersResponse.data.map(filterUserForClient);
 
   return posts.map((post) => {
     const author = users.find((user) => user.id === post.authorId);

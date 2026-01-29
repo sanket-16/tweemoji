@@ -3,15 +3,11 @@ import Head from "next/head";
 import { api } from "~/utils/api";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import LoadingPage, { Loading } from "~/components/Loading";
-import { createProxySSGHelpers } from "@trpc/react-query/ssg";
-import { appRouter } from "~/server/api/root";
-import { prisma } from "~/server/db";
-import superjson from "superjson";
+import LoadingPage, { PostSkeleton } from "~/components/Loading";
 import Layout from "~/components/Layout";
-import Image from "next/image";
 import Post from "~/components/Post";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
+import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
 
 dayjs.extend(relativeTime);
 
@@ -21,12 +17,13 @@ const ProfileFeed = (props: { userId: string }) => {
   });
   if (isLoading)
     return (
-      <div className="flex h-40 w-full items-center justify-center">
-        <Loading />
+      <div className="flex flex-col">
+        <PostSkeleton />
+        <PostSkeleton />
       </div>
     );
-  if (isError) return <div>Something went Wrong!</div>;
-  if (!data || data.length === 0) return <div>No Posts</div>;
+  if (isError) return <div className="p-6 text-destructive">Something went Wrong!</div>;
+  if (!data || data.length === 0) return <div className="p-6 text-muted-foreground">No Posts</div>;
 
   return (
     <div className="flex flex-col">
@@ -47,7 +44,7 @@ const ProfilePage = ({ username }: { username: string }) => {
         <LoadingPage />
       </div>
     );
-  if (isError) return <div>Oops</div>;
+  if (isError) return <div className="p-6 text-destructive">Oops</div>;
   return (
     <>
       <Head>
@@ -56,18 +53,17 @@ const ProfilePage = ({ username }: { username: string }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <div className="relative h-36 bg-slate-600">
-          <Image
-            src={data.profileImageUrl}
-            alt={`Profile pic of ${data?.username || "Deleted User"}`}
-            width={128}
-            height={128}
-            className="absolute bottom-0 left-0 -mb-[64px] ml-4  rounded-full border-8 border-black"
-          />
+        <div className="relative h-32 bg-muted">
+          <Avatar className="absolute -bottom-12 left-4 h-24 w-24 border-4 border-background">
+            <AvatarImage
+              src={data.profileImageUrl}
+              alt={`Profile pic of ${data?.username || "Deleted User"}`}
+            />
+            <AvatarFallback className="text-3xl">{data?.username?.[0]?.toUpperCase() ?? "?"}</AvatarFallback>
+          </Avatar>
         </div>
-        <div className="border-b border-slate-400 p-4">
-          <div className="h-16"></div>
-          <p className="px-4 text-2xl font-bold">{`@${
+        <div className="border-b px-4 pb-4 pt-14">
+          <p className="text-xl font-semibold">{`@${
             data?.username || "Deleted User"
           }`}</p>
         </div>
